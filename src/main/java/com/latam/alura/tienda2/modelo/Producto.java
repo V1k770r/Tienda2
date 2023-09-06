@@ -16,8 +16,13 @@ public class Producto {
     private String descripcion;
     private BigDecimal precio;
     private LocalDate fechaDeRegistro = LocalDate.now();
-    @Enumerated(EnumType.STRING)
+
+    @ManyToOne
     private Categoria categoria;
+
+    public Producto() {
+
+    }
 
     public Producto(String nombre, String descripcion, BigDecimal precio, Categoria categoria) {
         this.nombre = nombre;

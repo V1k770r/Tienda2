@@ -1,5 +1,6 @@
 package com.latam.alura.tienda2.prueba;
 
+import com.latam.alura.tienda2.dao.CategoriaDao;
 import com.latam.alura.tienda2.dao.ProductoDao;
 import com.latam.alura.tienda2.modelo.Categoria;
 import com.latam.alura.tienda2.modelo.Producto;
@@ -14,27 +15,27 @@ import java.math.BigDecimal;
 public class RegistroDeProducto {
     public static void main(String[] args) {
 
-        Producto celular = new Producto("Sansung","telefono usado",new BigDecimal("1000"), Categoria.CELULARES);
-
+        Categoria celulares = new Categoria("Celulares");
 
         EntityManager em = JPAUtils.getEntityManager();
 
-        ProductoDao productoDao = new ProductoDao(em);
-
-
         em.getTransaction().begin();
 
-        productoDao.guardar(celular);
+        em.persist(celulares);
 
+        celulares.setNombre("LIBROS");
 
         //comit envia los valores de esa instancia a la base de datos
-        em.getTransaction().commit();
-        em.close();
+        em.flush();
+        em.clear();
 
+        celulares = em.merge(celulares);
+        celulares.setNombre("SOFTWARES");
 
-
-
-
+        em.flush();
+        em.clear();
+        em.remove(celulares);
+        em.flush();
 
     }
 
